@@ -12,8 +12,6 @@ def generate_password():
     numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
     symbols = ['!', '#', '$', '%', '&', '(', ')', '*', '+']
 
-    password_list = []
-
     password_letters = [random.choice(letters) for _ in range(random.randint(8, 10))]
     password_numbers = [random.choice(numbers) for _ in range(random.randint(2, 4))]
     password_symbols = [random.choice(symbols) for _ in range(random.randint(2, 4))]
@@ -22,7 +20,6 @@ def generate_password():
     random.shuffle(password_list)
     password = ''.join(password_list)
 
-    print(f"Your password is: {password}")
     entry_password.delete(0, END)
     entry_password.insert(0, password)
 
