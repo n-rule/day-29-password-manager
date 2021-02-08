@@ -3,7 +3,7 @@ from tkinter import *
 from tkinter import messagebox
 
 import pyperclip
-
+import json
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 def generate_password():
@@ -31,22 +31,29 @@ def generate_password():
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 
 def save_password():
+    website = entry_website.get()
+    email = entry_email.get()
+    password = entry_password.get()
+
+    new_data = {
+        website: {
+            'email': email,
+            'password': password,
+        }
+    }
+
     if len(entry_website.get()) < 1 or len(entry_password.get()) < 1:
         messagebox.showwarning(title='ALARM ', message='Some fields are empty!')
 
     else:
+        with open('data.json', 'r') as data_file:
+            data = json.load(data_file)
+            data.update(new_data)
 
-        is_ok = messagebox.askokcancel(title='Password Manager', message='Is it ok to save?')
-
-        if is_ok:
-            with open('data.txt', 'a') as data:
-                data.write(f'{entry_website.get()} | ')
-                entry_website.delete(0, END)
-
-                data.write(f'{entry_email.get()} | ')
-
-                data.write(f'{entry_password.get()}\n')
-                entry_password.delete(0, END)
+        with open('data.json', 'w') as data_file:
+            json.dump(data, data_file, indent=4)
+            entry_website.delete(0, END)
+            entry_password.delete(0, END)
 
         messagebox.showinfo(message='Credentials was saved successfully')
 
