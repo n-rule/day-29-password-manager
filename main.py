@@ -6,6 +6,8 @@ import pyperclip
 import json
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
+
+
 def generate_password():
     # Password Generator Project
 
@@ -22,7 +24,7 @@ def generate_password():
     password_list = password_letters + password_numbers + password_symbols
     shuffle(password_list)
     password = ''.join(password_list)
-    pyperclip.copy(password)
+    # pyperclip.copy(password)
 
     entry_password.delete(0, END)
     entry_password.insert(0, password)
