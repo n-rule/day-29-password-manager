@@ -48,19 +48,41 @@ def save_password():
         messagebox.showwarning(title='ALARM ', message='Some fields are empty!')
 
     else:
-        with open('data.json', 'r') as data_file:
-            data = json.load(data_file)
+        try:
+            with open('data.json', 'r') as data_file:
+                data = json.load(data_file)
+        except FileNotFoundError:
+            with open('data.json', 'w') as data_file:
+                json.dump(new_data, data_file, indent=4)
+        else:
             data.update(new_data)
 
-        with open('data.json', 'w') as data_file:
-            json.dump(data, data_file, indent=4)
+            with open('data.json', 'w') as data_file:
+                json.dump(data, data_file, indent=4)
+        finally:
             entry_website.delete(0, END)
             entry_password.delete(0, END)
 
         messagebox.showinfo(message='Credentials was saved successfully')
+# -------------------------- SEARCH ENGINE ---------------------------- #
 
+
+def search():
+    try:
+        with open('data.json', 'r') as data_file:
+            data = json.load(data_file)
+            website = entry_website.get()
+
+            try:
+                password = data[website]["password"]
+                messagebox.showinfo(message=f'Website:\n{website}\n\nPassword:\n{password}')
+            except KeyError:
+                messagebox.showerror(message="No such website")
+    except FileNotFoundError:
+        messagebox.showwarning(message='File is empty')
 
 # ---------------------------- UI SETUP ------------------------------- #
+
 
 window = Tk()
 window.title('Password Manager')
@@ -80,7 +102,7 @@ label_email.grid(column='0', row='2', sticky='e')
 label_password = Label(text="Password : ")
 label_password.grid(column='0', row='3', sticky='e')
 
-entry_website = Entry(width='53')
+entry_website = Entry(width='34')
 entry_website.grid(column='1', row='1', columnspan='2', sticky='w')
 entry_website.focus()
 
@@ -94,7 +116,10 @@ entry_password.grid(column='1', row='3', columnspan='1', sticky='w')
 button_generate = Button(text='Generate Password', command=generate_password, width='14')
 button_generate.grid(column='2', row='3')
 
-button_generate = Button(text='Add', command=save_password, width='45')
-button_generate.grid(column='1', row='4', columnspan='2')
+button_search = Button(text='Search', command=search, width='14')
+button_search.grid(column='2', row='1')
+
+button_save = Button(text='Add', command=save_password, width='45')
+button_save.grid(column='1', row='4', columnspan='2')
 
 window.mainloop()
