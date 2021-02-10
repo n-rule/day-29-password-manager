@@ -82,7 +82,7 @@ def search():
             else:
                 messagebox.showinfo(message=f'Login:\n{email}\n\nPassword:\n{password}')
     except FileNotFoundError:
-        messagebox.showwarning(message='File is empty')
+        messagebox.showwarning(message='No Data Found')
 
 # ---------------------------- UI SETUP ------------------------------- #
 
