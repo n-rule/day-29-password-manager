@@ -64,6 +64,8 @@ def save_password():
             entry_password.delete(0, END)
 
         messagebox.showinfo(message='Credentials was saved successfully')
+
+
 # -------------------------- SEARCH ENGINE ---------------------------- #
 
 
@@ -72,12 +74,13 @@ def search():
         with open('data.json', 'r') as data_file:
             data = json.load(data_file)
             website = entry_website.get()
-
             try:
                 password = data[website]["password"]
-                messagebox.showinfo(message=f'Website:\n{website}\n\nPassword:\n{password}')
+                email = data[website]['email']
             except KeyError:
-                messagebox.showerror(message="No such website")
+                messagebox.showerror(title='Error', message="No such website")
+            else:
+                messagebox.showinfo(message=f'Login:\n{email}\n\nPassword:\n{password}')
     except FileNotFoundError:
         messagebox.showwarning(message='File is empty')
 
